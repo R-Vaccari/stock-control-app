@@ -36,8 +36,11 @@
    <center>
       <TableView prefHeight="281.0" prefWidth="410.0" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn prefWidth="75.0" text="C1" />
-          <TableColumn prefWidth="75.0" text="C2" />
+            <TableColumn prefWidth="75.0" text="ID" />
+            <TableColumn prefWidth="75.0" text="Name" />
+          <TableColumn prefWidth="75.0" text="Quantity" />
+          <TableColumn prefWidth="75.0" text="Category" />
+            <TableColumn prefWidth="75.0" text="Size" />
         </columns>
       </TableView>
    </center>
