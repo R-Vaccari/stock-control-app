@@ -43,13 +43,13 @@
          </children></VBox>
    </left>
    <center>
-      <TableView prefHeight="281.0" prefWidth="410.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="table" prefHeight="281.0" prefWidth="410.0" BorderPane.alignment="CENTER">
         <columns>
-            <TableColumn prefWidth="75.0" text="ID" />
-            <TableColumn prefWidth="75.0" text="Name" />
-          <TableColumn prefWidth="75.0" text="Quantity" />
-          <TableColumn prefWidth="75.0" text="Category" />
-            <TableColumn prefWidth="75.0" text="Size" />
+            <TableColumn fx:id="col_id" prefWidth="75.0" text="ID" />
+            <TableColumn fx:id="col_name" prefWidth="75.0" text="Name" />
+          <TableColumn fx:id="col_quantity" prefWidth="75.0" text="Quantity" />
+          <TableColumn fx:id="col_category" prefWidth="75.0" text="Category" />
+            <TableColumn fx:id="col_size" prefWidth="75.0" text="Size" />
         </columns>
       </TableView>
    </center>

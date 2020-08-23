@@ -1,4 +1,4 @@
-package application;
+package application.entities.enums;
 
 public enum Size {
     SMALL,

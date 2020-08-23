@@ -1,4 +1,7 @@
-package application;
+package application.entities;
+
+import application.entities.enums.Category;
+import application.entities.enums.Size;
 
 import java.util.Objects;
 
@@ -24,6 +27,20 @@ public class StockItem {
         this.name = name;
         this.quantity = quantity;
         this.category = category;
+        this.size = size;
+    }
+
+    public StockItem(String id, String name, Integer quantity, Category category) {
+        this.id = id;
+        this.name = name;
+        this.quantity = quantity;
+        this.category = category;
+    }
+
+    public StockItem(String id, String name, Integer quantity, Size size) {
+        this.id = id;
+        this.name = name;
+        this.quantity = quantity;
         this.size = size;
     }
 
