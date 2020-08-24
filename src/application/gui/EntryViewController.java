@@ -1,12 +1,16 @@
 package application.gui;
 
 import application.DBConnector;
+import application.RequiredFieldException;
 import application.entities.StockItem;
 import application.entities.enums.Category;
 import application.entities.enums.Size;
+import application.gui.util.Alerts;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -19,7 +23,6 @@ public class EntryViewController implements Initializable {
 
     @FXML
     private Button registerBt;
-
     @FXML
     private TextField txt01;
     @FXML
@@ -31,18 +34,26 @@ public class EntryViewController implements Initializable {
     @FXML
     private TextField txt05;
 
+    MenuButton menuButton = new MenuButton();
+
     public void onRegisterBt() throws SQLException {
 
-        StockItem item = new StockItem(txt01.getText(), txt02.getText(), Integer.parseInt(txt03.getText()),
-                Category.valueOf(txt04.getText()), Size.valueOf(txt05.getText()));
-
-        System.out.println(item);
-
-        Stage stage = (Stage) registerBt.getScene().getWindow();
-        stage.close();
+        try {
+            if (txt01.getText().equals("") || txt02.getText().equals("") || txt03.getText().equals("")) {
+                throw new RequiredFieldException();
+            } else {
+                StockItem item = new StockItem(txt01.getText(), txt02.getText(), Integer.parseInt(txt03.getText()),
+                        Category.valueOf(txt04.getText()), Size.valueOf(txt05.getText()));
+                Stage stage = (Stage) registerBt.getScene().getWindow();
+                stage.close();
+            }
+        } catch (RequiredFieldException e) {
+            Alerts.showAlert("Test Error", null, "Id, Name and Quantity fields must be filled.",
+                    Alert.AlertType.ERROR);
+        }
     }
 
-    @Override
+        @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
     }
 }
