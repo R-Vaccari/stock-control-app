@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
@@ -37,20 +38,44 @@ public class EntryViewController implements Initializable {
     MenuButton menuButton = new MenuButton();
 
     public void onRegisterBt() throws SQLException {
-
         try {
             if (txt01.getText().equals("") || txt02.getText().equals("") || txt03.getText().equals("")) {
                 throw new RequiredFieldException();
             } else {
                 StockItem item = new StockItem(txt01.getText(), txt02.getText(), Integer.parseInt(txt03.getText()),
                         Category.valueOf(txt04.getText()), Size.valueOf(txt05.getText()));
-                Stage stage = (Stage) registerBt.getScene().getWindow();
-                stage.close();
+
+                executeSQL(item);
             }
         } catch (RequiredFieldException e) {
             Alerts.showAlert("Test Error", null, "Id, Name and Quantity fields must be filled.",
                     Alert.AlertType.ERROR);
         }
+    }
+
+    public void executeSQL(StockItem item) throws SQLException {
+        Connection conn = DBConnector.getConnection();
+
+        PreparedStatement statementTable = conn.prepareStatement("CREATE TABLE stockitem (id varchar(10), name varchar(20), quantity int, " +
+                "category varchar(10), size varchar(10))");
+        statementTable.executeUpdate();
+        statementTable.close();
+
+        PreparedStatement insertStatement = conn.prepareStatement("INSERT INTO stockitem VALUES (?, ?, ?, ?, ?)");
+        insertStatement.setString(1, item.getId());
+        insertStatement.setString(2, item.getId());
+        insertStatement.setInt(3, item.getQuantity());
+        insertStatement.setString(4, item.getCategory().toString());
+        insertStatement.setString(5, item.getSize().toString());
+
+        insertStatement.executeUpdate();
+
+        System.out.println(insertStatement.executeUpdate());
+
+        insertStatement.close();
+        conn.close();
+        Stage stage = (Stage) registerBt.getScene().getWindow();
+        stage.close();
     }
 
         @Override

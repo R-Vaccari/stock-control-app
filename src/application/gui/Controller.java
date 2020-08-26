@@ -66,7 +66,6 @@ public class Controller implements Initializable {
 
     public ObservableList<StockItem> getStockItems() {
         ObservableList<StockItem> items = FXCollections.observableArrayList();
-
         return items;
     }
 }

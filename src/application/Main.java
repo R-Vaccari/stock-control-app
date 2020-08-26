@@ -1,15 +1,13 @@
 package application;
 
-import application.entities.StockItem;
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class Main extends Application {
@@ -24,8 +22,5 @@ public class Main extends Application {
 
     public static void main(String[] args) throws SQLException {
         launch(args);
-
-        Connection conn = DBConnector.getConnection();
-        conn.close();
     }
 }
