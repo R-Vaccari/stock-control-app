@@ -56,23 +56,15 @@ public class EntryViewController implements Initializable {
     public void executeSQL(StockItem item) throws SQLException {
         Connection conn = DBConnector.getConnection();
 
-        PreparedStatement statementTable = conn.prepareStatement("CREATE TABLE stockitem (id varchar(10), name varchar(20), quantity int, " +
-                "category varchar(10), size varchar(10))");
-        statementTable.executeUpdate();
-        statementTable.close();
-
         PreparedStatement insertStatement = conn.prepareStatement("INSERT INTO stockitem VALUES (?, ?, ?, ?, ?)");
         insertStatement.setString(1, item.getId());
         insertStatement.setString(2, item.getId());
         insertStatement.setInt(3, item.getQuantity());
         insertStatement.setString(4, item.getCategory().toString());
         insertStatement.setString(5, item.getSize().toString());
-
         insertStatement.executeUpdate();
-
-        System.out.println(insertStatement.executeUpdate());
-
         insertStatement.close();
+
         conn.close();
         Stage stage = (Stage) registerBt.getScene().getWindow();
         stage.close();
