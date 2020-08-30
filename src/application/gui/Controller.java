@@ -37,8 +37,6 @@ public class Controller implements Initializable {
     @FXML
     private TableView<StockItem> table = new TableView<>();
     @FXML
-    private ObservableList<StockItem> items = null;
-    @FXML
     private TableColumn<StockItem, String> col_id;
     @FXML
     private TableColumn<StockItem, String> col_name;
@@ -62,7 +60,6 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-
          Connection conn = DBConnector.getConnection();
 
         try {
@@ -85,11 +82,12 @@ public class Controller implements Initializable {
         }
 
         try {
-
             QueryRunner qr = new QueryRunner();
             ResultSetHandler<List<StockItem>> handler = new BeanListHandler<StockItem>(StockItem.class);
 
             List<StockItem> items = qr.query(conn, "SELECT * FROM stockitem", handler);
+
+            items.add(new StockItem("090909", "TEST2", 2, Category.BACKPACK, Size.SMALL));
 
             col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
             col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
