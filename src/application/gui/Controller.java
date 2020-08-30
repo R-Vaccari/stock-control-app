@@ -16,11 +16,17 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.ResultSetHandler;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
 
+import javax.naming.NamingException;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
@@ -57,36 +63,51 @@ public class Controller implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
 
-        Connection conn = DBConnector.getConnection();
+         Connection conn = DBConnector.getConnection();
 
-        /*
         try {
             PreparedStatement statementTable = conn.prepareStatement("CREATE TABLE stockitem (id varchar(10), name varchar(20), quantity int, " +
                     "category varchar(10), size varchar(10))");
             statementTable.executeUpdate();
             statementTable.close();
 
-            PreparedStatement sql = conn.prepareStatement("SELECT * FROM stockitem");
-            ResultSet rs = sql.executeQuery(sql);
-
-            List<StockItem> listStock = (List<StockItem>) rs;
-            items = FXCollections.observableArrayList(listStock);
+            PreparedStatement statementInsert = conn.prepareStatement("INSERT INTO stockitem VALUES (?, ?, ?, ?, ?)");
+            statementInsert.setString(1, "121212");
+            statementInsert.setString(2, "TEST");
+            statementInsert.setInt(3, 1);
+            statementInsert.setString(4, Category.LUGAGGE.toString());
+            statementInsert.setString(5, Size.BIG.toString());
+            statementInsert.executeUpdate();
+            statementInsert.close();
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-
         }
-         */
 
-        // QueryRunner qr = new QueryRunner(conn);
+        try {
 
-        col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
-        col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
-        col_quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        col_category.setCellValueFactory(new PropertyValueFactory<>("category"));
-        col_size.setCellValueFactory(new PropertyValueFactory<>("size"));
+            QueryRunner qr = new QueryRunner();
+            ResultSetHandler<List<StockItem>> handler = new BeanListHandler<StockItem>(StockItem.class);
 
-        table.getItems().add(new StockItem("090909", "Test", 1, Category.LUGAGGE, Size.BIG));
+            List<StockItem> items = qr.query(conn, "SELECT * FROM stockitem", handler);
+
+            col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
+            col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
+            col_quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+            col_category.setCellValueFactory(new PropertyValueFactory<>("category"));
+            col_size.setCellValueFactory(new PropertyValueFactory<>("size"));
+
+            table.getItems().addAll(items);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                conn.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
 
         //table.setItems(items);
         //table.getColumns().addAll(col_id, col_name, col_quantity, col_category, col_size);
