@@ -34,6 +34,10 @@ public class Controller implements Initializable {
     @FXML
     private Button addEntryBt;
     @FXML
+    private Button increaseQuantityBt;
+    @FXML
+    private Button decreaseQuantityBt;
+    @FXML
     private TextField fieldFilter;
     @FXML
     private TableView<StockItem> table = new TableView<>();
@@ -109,9 +113,7 @@ public class Controller implements Initializable {
         });
 
         SortedList<StockItem> sortedData = new SortedList<>(filteredData);
-
         sortedData.comparatorProperty().bind(table.comparatorProperty());
-
         table.setItems(sortedData);
 
         try {
@@ -119,5 +121,29 @@ public class Controller implements Initializable {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+    }
+
+    @FXML
+    public void onIncreaseQuantityBt() throws IOException {
+        StockItem item = table.getSelectionModel().getSelectedItem();
+        item.setQuantity(item.getQuantity() + 1);
+        try {
+            SQL.updateQuantitySQL(item);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        table.refresh();
+    }
+
+    @FXML
+    public void onDecreaseQuantityBt() throws IOException {
+        StockItem item = table.getSelectionModel().getSelectedItem();
+        item.setQuantity(item.getQuantity() - 1);
+        try {
+            SQL.updateQuantitySQL(item);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        table.refresh();
     }
 }

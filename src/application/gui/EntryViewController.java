@@ -2,6 +2,7 @@ package application.gui;
 
 import application.DBConnector;
 import application.RequiredFieldException;
+import application.SQL;
 import application.entities.StockItem;
 import application.entities.enums.Category;
 import application.entities.enums.Size;
@@ -45,32 +46,15 @@ public class EntryViewController implements Initializable {
                 StockItem item = new StockItem(txt01.getText(), txt02.getText(), Integer.parseInt(txt03.getText()),
                         Category.valueOf(txt04.getText()), Size.valueOf(txt05.getText()));
 
-                executeSQL(item);
+                SQL.executeSQL(item, registerBt);
             }
         } catch (RequiredFieldException e) {
-            Alerts.showAlert("Test Error", null, "Id, Name and Quantity fields must be filled.",
+            Alerts.showAlert("Fields Missing", null, "Id, Name and Quantity fields must be filled.",
                     Alert.AlertType.ERROR);
         }
     }
 
-    public void executeSQL(StockItem item) throws SQLException {
-        Connection conn = DBConnector.getConnection();
-
-        PreparedStatement insertStatement = conn.prepareStatement("INSERT INTO stockitem VALUES (?, ?, ?, ?, ?)");
-        insertStatement.setString(1, item.getId());
-        insertStatement.setString(2, item.getId());
-        insertStatement.setInt(3, item.getQuantity());
-        insertStatement.setString(4, item.getCategory().toString());
-        insertStatement.setString(5, item.getSize().toString());
-        insertStatement.executeUpdate();
-        insertStatement.close();
-
-        conn.close();
-        Stage stage = (Stage) registerBt.getScene().getWindow();
-        stage.close();
-    }
-
-        @Override
+    @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
     }
 }
