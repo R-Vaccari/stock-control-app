@@ -40,6 +40,8 @@ public class Controller implements Initializable {
     @FXML
     private Button refreshBt;
     @FXML
+    private Button deleteBt;
+    @FXML
     private TextField fieldFilter;
     @FXML
     private TableView<StockItem> table = new TableView<>();
@@ -153,8 +155,16 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    public void onDeleteBt() {
+    public void onDeleteBt() throws SQLException {
         StockItem item = table.getSelectionModel().getSelectedItem();
+        try {
+            SQL.deleteSQL(item);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        List<StockItem> items = SQL.buildListFromDB();
+        masterData.removeAll(masterData);
+        masterData.addAll(items);
     }
 
     @FXML

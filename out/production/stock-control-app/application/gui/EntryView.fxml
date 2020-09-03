@@ -21,7 +21,7 @@
       <Text layoutX="65.0" layoutY="248.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Size" />
       <Text layoutX="24.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New Item Registration">
          <font>
-            <Font name="Times New Roman" size="18.0" />
+            <Font size="18.0" />
          </font>
       </Text>
    </children>

@@ -77,4 +77,14 @@ public class SQL {
 
         conn.close();
     }
+
+    public static void deleteSQL(StockItem item) throws SQLException {
+        Connection conn = DBConnector.getConnection();
+
+        PreparedStatement statement = conn.prepareStatement("DELETE FROM stockitem WHERE id = " + item.getId());
+        statement.executeUpdate();
+        statement.close();
+
+        conn.close();
+    }
 }

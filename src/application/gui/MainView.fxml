@@ -51,9 +51,10 @@
                   <Button fx:id="addEntryBt" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onAddEntryBt" text="Add Entry" />
                   <TextField fx:id="fieldFilter" layoutX="388.0" layoutY="14.0" prefHeight="25.0" prefWidth="106.0" promptText="Item ID / Name" />
                   <Text layoutX="344.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search:" />
-                  <Button fx:id="increaseQuantityBt" layoutX="100.0" layoutY="14.0" mnemonicParsing="false" onAction="#onIncreaseQuantityBt" text="+" />
-                  <Button fx:id="decreaseQuantityBt" layoutX="137.0" layoutY="14.0" mnemonicParsing="false" onAction="#onDecreaseQuantityBt" text="-" />
+                  <Button fx:id="increaseQuantityBt" layoutX="155.0" layoutY="14.0" mnemonicParsing="false" onAction="#onIncreaseQuantityBt" text="+" />
+                  <Button fx:id="decreaseQuantityBt" layoutX="189.0" layoutY="14.0" mnemonicParsing="false" onAction="#onDecreaseQuantityBt" text="-" />
                   <Button fx:id="refreshBt" layoutX="279.0" layoutY="14.0" mnemonicParsing="false" onAction="#onRefreshBt" text="Refresh" />
+                  <Button fx:id="deleteBt" layoutX="91.0" layoutY="14.0" mnemonicParsing="false" onAction="#onDeleteBt" text="Delete" />
                </children>
             </AnchorPane>
         </items>
