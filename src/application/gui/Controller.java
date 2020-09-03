@@ -38,6 +38,8 @@ public class Controller implements Initializable {
     @FXML
     private Button decreaseQuantityBt;
     @FXML
+    private Button refreshBt;
+    @FXML
     private TextField fieldFilter;
     @FXML
     private TableView<StockItem> table = new TableView<>();
@@ -69,16 +71,19 @@ public class Controller implements Initializable {
 
          Connection conn = DBConnector.getConnection();
 
+         /*
         try {
-            SQL.createItemTable();
-            SQL.insertTestItems();
+            //SQL.createItemTable();
+            //SQL.insertTestItems();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+          */
 
         try {
             List<StockItem> items = SQL.buildListFromDB();
-            items.add(new StockItem("090909", "TEST2", 2, Category.BACKPACK, Size.SMALL));
+            //items.add(new StockItem("090909", "TEST2", 2, Category.BACKPACK, Size.SMALL));
+
 
             col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
             col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -145,5 +150,21 @@ public class Controller implements Initializable {
             throwables.printStackTrace();
         }
         table.refresh();
+    }
+
+    @FXML
+    public void onDeleteBt() {
+        StockItem item = table.getSelectionModel().getSelectedItem();
+    }
+
+    @FXML
+    public void onRefreshBt() throws SQLException {
+        List<StockItem> items = SQL.buildListFromDB();
+        masterData.removeAll(masterData);
+        masterData.addAll(items);
+    }
+
+    public TableView<StockItem> getTable() {
+        return table;
     }
 }

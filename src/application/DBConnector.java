@@ -9,7 +9,8 @@ public class DBConnector {
     public static Connection getConnection() {
         Connection conn = null;
         try {
-            conn = DriverManager.getConnection("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1", "sa", "");
+           // conn = DriverManager.getConnection("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1", "sa", "");
+            conn = DriverManager.getConnection("jdbc:h2:file:C:\\Users\\caixa\\h2", "sa", "");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

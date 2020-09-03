@@ -4,7 +4,6 @@ import application.entities.StockItem;
 import application.entities.enums.Category;
 import application.entities.enums.Size;
 import javafx.scene.control.Button;
-import javafx.stage.Stage;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
@@ -54,12 +53,12 @@ public class SQL {
         return items;
     }
 
-    public static void executeSQL(StockItem item, Button registerBt) throws SQLException {
+    public static void executeSQL(StockItem item) throws SQLException {
         Connection conn = DBConnector.getConnection();
 
         PreparedStatement statement = conn.prepareStatement("INSERT INTO stockitem VALUES (?, ?, ?, ?, ?)");
         statement.setString(1, item.getId());
-        statement.setString(2, item.getId());
+        statement.setString(2, item.getName());
         statement.setInt(3, item.getQuantity());
         statement.setString(4, item.getCategory().toString());
         statement.setString(5, item.getSize().toString());
@@ -67,8 +66,6 @@ public class SQL {
         statement.close();
 
         conn.close();
-        Stage stage = (Stage) registerBt.getScene().getWindow();
-        stage.close();
     }
 
     public static void updateQuantitySQL(StockItem item) throws SQLException {

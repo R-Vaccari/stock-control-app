@@ -1,6 +1,5 @@
 package application.gui;
 
-import application.DBConnector;
 import application.RequiredFieldException;
 import application.SQL;
 import application.entities.StockItem;
@@ -8,16 +7,15 @@ import application.entities.enums.Category;
 import application.entities.enums.Size;
 import application.gui.util.Alerts;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.TextField;
+import javafx.scene.Parent;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
@@ -35,8 +33,16 @@ public class EntryViewController implements Initializable {
     private TextField txt04;
     @FXML
     private TextField txt05;
-
-    MenuButton menuButton = new MenuButton();
+    /*
+    @FXML
+    private MenuItem menuItem1 = new MenuItem("Lugagge");
+    @FXML
+    private MenuItem menuItem2 = new MenuItem("Backpack");
+    @FXML
+    private MenuItem menuItem3 = new MenuItem("Wallet");
+    @FXML
+    private MenuButton menuButton01 = new MenuButton("Category", null, menuItem1, menuItem2, menuItem3);
+     */
 
     public void onRegisterBt() throws SQLException {
         try {
@@ -46,12 +52,30 @@ public class EntryViewController implements Initializable {
                 StockItem item = new StockItem(txt01.getText(), txt02.getText(), Integer.parseInt(txt03.getText()),
                         Category.valueOf(txt04.getText()), Size.valueOf(txt05.getText()));
 
-                SQL.executeSQL(item, registerBt);
+                SQL.executeSQL(item);
+                refreshScene();
             }
         } catch (RequiredFieldException e) {
             Alerts.showAlert("Fields Missing", null, "Id, Name and Quantity fields must be filled.",
                     Alert.AlertType.ERROR);
         }
+    }
+
+    public void refreshScene() {
+        //Parent root = FXMLLoader.load(getClass().getResource("gui/MainView.fxml"));
+        // root.getScene().getWindow().
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("MainView.fxml"));
+            Parent root = loader.load();
+            Controller controller = (Controller) loader.getController();
+            TableView<StockItem> table = controller.getTable();
+            table.refresh();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Stage stage = (Stage) registerBt.getScene().getWindow();
+        stage.close();
     }
 
     @Override

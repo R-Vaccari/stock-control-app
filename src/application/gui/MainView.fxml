@@ -45,7 +45,7 @@
                         <TableColumn fx:id="col_name" prefWidth="163.0" text="Name" />
                       <TableColumn fx:id="col_quantity" prefWidth="62.0" text="Quantity" />
                       <TableColumn fx:id="col_category" prefWidth="114.0" text="Category" />
-                        <TableColumn fx:id="col_size" prefWidth="72.0" text="Size" />
+                        <TableColumn fx:id="col_size" prefWidth="64.0" text="Size" />
                     </columns>
                   </TableView>
                   <Button fx:id="addEntryBt" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onAddEntryBt" text="Add Entry" />
@@ -53,6 +53,7 @@
                   <Text layoutX="344.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search:" />
                   <Button fx:id="increaseQuantityBt" layoutX="100.0" layoutY="14.0" mnemonicParsing="false" onAction="#onIncreaseQuantityBt" text="+" />
                   <Button fx:id="decreaseQuantityBt" layoutX="137.0" layoutY="14.0" mnemonicParsing="false" onAction="#onDecreaseQuantityBt" text="-" />
+                  <Button fx:id="refreshBt" layoutX="279.0" layoutY="14.0" mnemonicParsing="false" onAction="#onRefreshBt" text="Refresh" />
                </children>
             </AnchorPane>
         </items>
