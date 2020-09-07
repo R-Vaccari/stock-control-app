@@ -48,7 +48,7 @@ public class EntryViewController implements Initializable {
                 throw new RequiredFieldException();
             } else {
                 StockItem item = new StockItem(txt01.getText(), txt02.getText(), Integer.parseInt(txt03.getText()),
-                        Category.valueOf(txt04.getText()), Size.valueOf(txt05.getText()));
+                        Category.valueOf(txt04.getText().toUpperCase()), Size.valueOf(txt05.getText().toUpperCase()));
 
                 SQL.executeSQL(item);
                 refreshScene();

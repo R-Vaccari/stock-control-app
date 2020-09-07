@@ -5,6 +5,7 @@ import application.database.SQL;
 import application.entities.StockItem;
 import application.entities.enums.Category;
 import application.entities.enums.Size;
+import application.gui.util.Alerts;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -14,12 +15,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import org.h2.jdbc.JdbcSQLIntegrityConstraintViolationException;
 
 import java.io.File;
 import java.io.IOException;
@@ -72,6 +71,23 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        Connection conn = null;
+
+        try {
+            conn = DBConnector.getConnection();
+            DatabaseMetaData dbm = conn.getMetaData();
+
+            ResultSet tables = dbm.getTables(null, null, "STOCKITEM", null);
+            if (!tables.next()) SQL.createItemTable();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            try {
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
 
         List<StockItem> items = SQL.buildListFromDB();
 
@@ -106,7 +122,6 @@ public class Controller implements Initializable {
         SortedList<StockItem> sortedData = new SortedList<>(filteredData);
         sortedData.comparatorProperty().bind(table.comparatorProperty());
         table.setItems(sortedData);
-
     }
 
     @FXML
@@ -123,7 +138,12 @@ public class Controller implements Initializable {
         StockItem item = table.getSelectionModel().getSelectedItem();
         item.setQuantity(item.getQuantity() - 1);
 
-        SQL.updateQuantitySQL(item);
+        if (item.getQuantity() >= 0) SQL.updateQuantitySQL(item);
+        else {
+            Alerts.showAlert("Negative Quantity", null, "Item quantity must not be negative.",
+                    Alert.AlertType.ERROR);
+            item.setQuantity(0);
+        }
         table.refresh();
     }
 
