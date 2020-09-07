@@ -1,20 +1,18 @@
 package application.gui;
 
 import application.RequiredFieldException;
-import application.SQL;
+import application.database.SQL;
 import application.entities.StockItem;
 import application.entities.enums.Category;
 import application.entities.enums.Size;
 import application.gui.util.Alerts;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -44,7 +42,7 @@ public class EntryViewController implements Initializable {
     private MenuButton menuButton01 = new MenuButton("Category", null, menuItem1, menuItem2, menuItem3);
      */
 
-    public void onRegisterBt() throws SQLException {
+    public void onRegisterBt() {
         try {
             if (txt01.getText().equals("") || txt02.getText().equals("") || txt03.getText().equals("")) {
                 throw new RequiredFieldException();
@@ -62,18 +60,6 @@ public class EntryViewController implements Initializable {
     }
 
     public void refreshScene() {
-        //Parent root = FXMLLoader.load(getClass().getResource("gui/MainView.fxml"));
-        // root.getScene().getWindow().
-
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("MainView.fxml"));
-            Parent root = loader.load();
-            Controller controller = (Controller) loader.getController();
-            TableView<StockItem> table = controller.getTable();
-            table.refresh();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         Stage stage = (Stage) registerBt.getScene().getWindow();
         stage.close();
     }

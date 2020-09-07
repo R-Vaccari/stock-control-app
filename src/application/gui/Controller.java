@@ -1,7 +1,7 @@
 package application.gui;
 
-import application.DBConnector;
-import application.SQL;
+import application.database.DBConnector;
+import application.database.SQL;
 import application.entities.StockItem;
 import application.entities.enums.Category;
 import application.entities.enums.Size;
@@ -25,6 +25,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -71,34 +73,16 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-         Connection conn = DBConnector.getConnection();
+        List<StockItem> items = SQL.buildListFromDB();
 
-         /*
-        try {
-            //SQL.createItemTable();
-            //SQL.insertTestItems();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-          */
+        col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        col_quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        col_category.setCellValueFactory(new PropertyValueFactory<>("category"));
+        col_size.setCellValueFactory(new PropertyValueFactory<>("size"));
 
-        try {
-            List<StockItem> items = SQL.buildListFromDB();
-            //items.add(new StockItem("090909", "TEST2", 2, Category.BACKPACK, Size.SMALL));
-
-
-            col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
-            col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
-            col_quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-            col_category.setCellValueFactory(new PropertyValueFactory<>("category"));
-            col_size.setCellValueFactory(new PropertyValueFactory<>("size"));
-
-            table.getItems().addAll(items);
-            masterData.addAll(items);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        table.getItems().addAll(items);
+        masterData.addAll(items);
 
         FilteredList<StockItem> filteredData = new FilteredList<>(masterData, p -> true);  // allows for filtering. p -> true is a standard expression
 
@@ -123,58 +107,39 @@ public class Controller implements Initializable {
         sortedData.comparatorProperty().bind(table.comparatorProperty());
         table.setItems(sortedData);
 
-        try {
-            conn.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
     }
 
     @FXML
-    public void onIncreaseQuantityBt() throws IOException {
+    public void onIncreaseQuantityBt() {
         StockItem item = table.getSelectionModel().getSelectedItem();
         item.setQuantity(item.getQuantity() + 1);
-        try {
-            SQL.updateQuantitySQL(item);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+
+        SQL.updateQuantitySQL(item);
         table.refresh();
     }
 
     @FXML
-    public void onDecreaseQuantityBt() throws IOException {
+    public void onDecreaseQuantityBt() {
         StockItem item = table.getSelectionModel().getSelectedItem();
         item.setQuantity(item.getQuantity() - 1);
-        try {
-            SQL.updateQuantitySQL(item);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+
+        SQL.updateQuantitySQL(item);
         table.refresh();
     }
 
     @FXML
-    public void onDeleteBt() throws SQLException {
+    public void onDeleteBt() {
         StockItem item = table.getSelectionModel().getSelectedItem();
-        try {
-            SQL.deleteSQL(item);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+        SQL.deleteSQL(item);
         List<StockItem> items = SQL.buildListFromDB();
         masterData.removeAll(masterData);
         masterData.addAll(items);
     }
 
     @FXML
-    public void onRefreshBt() throws SQLException {
+    public void onRefreshBt() {
         List<StockItem> items = SQL.buildListFromDB();
         masterData.removeAll(masterData);
         masterData.addAll(items);
-    }
-
-    public TableView<StockItem> getTable() {
-        return table;
     }
 }

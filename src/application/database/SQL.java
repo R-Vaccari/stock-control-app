@@ -1,9 +1,6 @@
-package application;
+package application.database;
 
 import application.entities.StockItem;
-import application.entities.enums.Category;
-import application.entities.enums.Size;
-import javafx.scene.control.Button;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
@@ -15,76 +12,127 @@ import java.util.List;
 
 public class SQL {
 
-    public static void createItemTable() throws SQLException {
-        Connection conn = DBConnector.getConnection();
+    static Connection conn = null;
 
-        PreparedStatement statement = conn.prepareStatement("CREATE TABLE stockitem (id varchar(10), name varchar(20), quantity int, " +
-                "category varchar(10), size varchar(10))");
-        statement.executeUpdate();
-        statement.close();
+    public static void createItemTable()  {
+        PreparedStatement statement = null;
 
-        conn.close();
+        try {
+            conn = DBConnector.getConnection();
+            conn.setAutoCommit(false);
+
+            statement = conn.prepareStatement("CREATE TABLE stockitem (id varchar(10), name varchar(20), quantity int, " +
+                    "category varchar(10), size varchar(10))");
+
+            statement.executeUpdate();
+            conn.commit();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            try {
+                if (statement != null) statement.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
-    public static void insertTestItems() throws SQLException {
-        Connection conn = DBConnector.getConnection();
-
-        PreparedStatement statement = conn.prepareStatement("INSERT INTO stockitem VALUES (?, ?, ?, ?, ?)");
-        statement.setString(1, "121212");
-        statement.setString(2, "TEST");
-        statement.setInt(3, 1);
-        statement.setString(4, Category.LUGAGGE.toString());
-        statement.setString(5, Size.BIG.toString());
-        statement.executeUpdate();
-        statement.close();
-
-        conn.close();
-    }
-
-    public static List<StockItem> buildListFromDB() throws SQLException {
-        Connection conn = DBConnector.getConnection();
-
+    public static List<StockItem> buildListFromDB() {
         QueryRunner qr = new QueryRunner();
         ResultSetHandler<List<StockItem>> handler = new BeanListHandler<StockItem>(StockItem.class);
 
-        List<StockItem> items = qr.query(conn, "SELECT * FROM stockitem", handler);
-        conn.close();
+        try {
+            conn = DBConnector.getConnection();
+            List<StockItem> items = qr.query(conn, "SELECT * FROM stockitem", handler);
 
-        return items;
+            return items;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            try {
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 
-    public static void executeSQL(StockItem item) throws SQLException {
-        Connection conn = DBConnector.getConnection();
+    public static void executeSQL(StockItem item) {
+        PreparedStatement statement = null;
 
-        PreparedStatement statement = conn.prepareStatement("INSERT INTO stockitem VALUES (?, ?, ?, ?, ?)");
-        statement.setString(1, item.getId());
-        statement.setString(2, item.getName());
-        statement.setInt(3, item.getQuantity());
-        statement.setString(4, item.getCategory().toString());
-        statement.setString(5, item.getSize().toString());
-        statement.executeUpdate();
-        statement.close();
+        try {
+            conn = DBConnector.getConnection();
+            conn.setAutoCommit(false);
 
-        conn.close();
+            statement = conn.prepareStatement("INSERT INTO stockitem VALUES (?, ?, ?, ?, ?)");
+            statement.setString(1, item.getId());
+            statement.setString(2, item.getName());
+            statement.setInt(3, item.getQuantity());
+            statement.setString(4, item.getCategory().toString());
+            statement.setString(5, item.getSize().toString());
+
+            statement.executeUpdate();
+            conn.commit();
+        } catch (SQLException throwables) {
+        throwables.printStackTrace();
+        } finally {
+            try {
+                if (statement != null) statement.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
-    public static void updateQuantitySQL(StockItem item) throws SQLException {
-        Connection conn = DBConnector.getConnection();
+    public static void updateQuantitySQL(StockItem item) {
+        PreparedStatement statement = null;
 
-        PreparedStatement statement = conn.prepareStatement("UPDATE stockitem SET quantity = " + item.getQuantity() + " WHERE id = " + item.getId());
-        statement.executeUpdate();
-        statement.close();
+        try {
+            conn = DBConnector.getConnection();
+            conn.setAutoCommit(false);
 
-        conn.close();
+            statement = conn.prepareStatement("UPDATE stockitem SET quantity = ? WHERE id = ?");
+            statement.setInt(1, item.getQuantity());
+            statement.setString(2, item.getId());
+
+            statement.executeUpdate();
+            conn.commit();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            try {
+                if (statement != null) statement.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
-    public static void deleteSQL(StockItem item) throws SQLException {
-        Connection conn = DBConnector.getConnection();
+    public static void deleteSQL(StockItem item) {
+        PreparedStatement statement = null;
 
-        PreparedStatement statement = conn.prepareStatement("DELETE FROM stockitem WHERE id = " + item.getId());
-        statement.executeUpdate();
-        statement.close();
+        try {
+            conn = DBConnector.getConnection();
+            conn.setAutoCommit(false);
 
-        conn.close();
+            statement = conn.prepareStatement("DELETE FROM stockitem WHERE id = ?");
+            statement.setString(1, item.getId());
+
+            statement.executeUpdate();
+            conn.commit();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            try {
+                if (statement != null) statement.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
