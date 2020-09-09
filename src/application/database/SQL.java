@@ -21,7 +21,7 @@ public class SQL {
             conn = DBConnector.getConnection();
             conn.setAutoCommit(false);
 
-            statement = conn.prepareStatement("CREATE TABLE stockitem (id varchar(10) PRIMARY KEY, name varchar(20), quantity int CHECK (quantity >= 0), " +
+            statement = conn.prepareStatement("CREATE TABLE stockitem (id varchar(10), name varchar(20) PRIMARY KEY, quantity int CHECK (quantity >= 0), " +
                     "category varchar(10), size varchar(10))");
 
             statement.executeUpdate();

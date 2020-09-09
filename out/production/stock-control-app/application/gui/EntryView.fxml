@@ -13,8 +13,8 @@
       <Button fx:id="registerBt" layoutX="334.0" layoutY="281.0" mnemonicParsing="false" onAction="#onRegisterBt" text="Register" />
       <TextField fx:id="txt02" layoutX="212.0" layoutY="115.0" promptText="Required" />
       <TextField fx:id="txt03" layoutX="212.0" layoutY="154.0" promptText="Required" />
-      <TextField fx:id="txt04" layoutX="212.0" layoutY="193.0" promptText="Not required" />
-      <TextField fx:id="txt05" layoutX="212.0" layoutY="231.0" promptText="Not required" />
+      <TextField fx:id="txt04" layoutX="212.0" layoutY="193.0" promptText="Lugagge / Backpack" />
+      <TextField fx:id="txt05" layoutX="212.0" layoutY="231.0" promptText="Big / Medium / Small" />
       <Text layoutX="65.0" layoutY="132.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" />
       <Text layoutX="65.0" layoutY="171.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Quantity" />
       <Text layoutX="65.0" layoutY="210.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Category" />

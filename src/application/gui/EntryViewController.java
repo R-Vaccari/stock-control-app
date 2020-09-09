@@ -14,7 +14,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class EntryViewController implements Initializable {
@@ -42,16 +41,18 @@ public class EntryViewController implements Initializable {
     private MenuButton menuButton01 = new MenuButton("Category", null, menuItem1, menuItem2, menuItem3);
      */
 
+    @FXML
     public void onRegisterBt() {
         try {
-            if (txt01.getText().equals("") || txt02.getText().equals("") || txt03.getText().equals("")) {
-                throw new RequiredFieldException();
-            } else {
+            if (txt01.getText().equals("") || txt02.getText().equals("") || txt03.getText().equals("")) throw new RequiredFieldException();
+            else {
                 StockItem item = new StockItem(txt01.getText(), txt02.getText(), Integer.parseInt(txt03.getText()),
                         Category.valueOf(txt04.getText().toUpperCase()), Size.valueOf(txt05.getText().toUpperCase()));
 
                 SQL.executeSQL(item);
-                refreshScene();
+                Alerts.showAlert("Entry Registration", null, "Entry registered successfully. Use 'Refresh' to see changes.",
+                        Alert.AlertType.INFORMATION);
+                closeStage();
             }
         } catch (RequiredFieldException e) {
             Alerts.showAlert("Fields Missing", null, "Id, Name and Quantity fields must be filled.",
@@ -59,7 +60,7 @@ public class EntryViewController implements Initializable {
         }
     }
 
-    public void refreshScene() {
+    public void closeStage() {
         Stage stage = (Stage) registerBt.getScene().getWindow();
         stage.close();
     }

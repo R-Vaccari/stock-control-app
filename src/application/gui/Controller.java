@@ -17,6 +17,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import org.h2.jdbc.JdbcSQLIntegrityConstraintViolationException;
 
@@ -32,6 +33,8 @@ import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
 
+    @FXML
+    private BorderPane mainPane;
     @FXML
     private Button addEntryBt;
     @FXML
@@ -56,8 +59,15 @@ public class Controller implements Initializable {
     private TableColumn<StockItem, Category> col_category;
     @FXML
     private TableColumn<StockItem, Size> col_size;
+    @FXML
+    private MenuItem aboutBt;
 
     private ObservableList<StockItem> masterData = FXCollections.observableArrayList();
+
+    @FXML
+    public void onAboutBt() {
+        AboutView aboutView = new AboutView();
+    }
 
     @FXML
     public void onAddEntryBt() throws IOException {
@@ -140,7 +150,7 @@ public class Controller implements Initializable {
 
         if (item.getQuantity() >= 0) SQL.updateQuantitySQL(item);
         else {
-            Alerts.showAlert("Negative Quantity", null, "Item quantity must not be negative.",
+            Alerts.showAlert("Negative Quantity", null, "Item quantity may not be negative.",
                     Alert.AlertType.ERROR);
             item.setQuantity(0);
         }
