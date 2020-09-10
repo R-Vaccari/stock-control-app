@@ -4,7 +4,6 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -35,29 +34,25 @@
       </MenuBar>
    </top>
    <center>
-      <SplitPane orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" BorderPane.alignment="CENTER">
-        <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-               <children>
-                  <TableView fx:id="table" layoutY="51.0" prefHeight="295.0" prefWidth="510.0">
-                    <columns>
-                        <TableColumn fx:id="col_id" prefWidth="104.0" text="ID" />
-                        <TableColumn fx:id="col_name" prefWidth="163.0" text="Name" />
-                      <TableColumn fx:id="col_quantity" prefWidth="62.0" text="Quantity" />
-                      <TableColumn fx:id="col_category" prefWidth="114.0" text="Category" />
-                        <TableColumn fx:id="col_size" prefWidth="64.0" text="Size" />
-                    </columns>
-                  </TableView>
-                  <Button fx:id="addEntryBt" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onAddEntryBt" text="Add Entry" />
-                  <TextField fx:id="fieldFilter" layoutX="388.0" layoutY="14.0" prefHeight="25.0" prefWidth="106.0" promptText="Item ID / Name" />
-                  <Text layoutX="344.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search:" />
-                  <Button fx:id="increaseQuantityBt" layoutX="155.0" layoutY="14.0" mnemonicParsing="false" onAction="#onIncreaseQuantityBt" text="+" />
-                  <Button fx:id="decreaseQuantityBt" layoutX="189.0" layoutY="14.0" mnemonicParsing="false" onAction="#onDecreaseQuantityBt" text="-" />
-                  <Button fx:id="refreshBt" layoutX="279.0" layoutY="14.0" mnemonicParsing="false" onAction="#onRefreshBt" text="Refresh" />
-                  <Button fx:id="deleteBt" layoutX="91.0" layoutY="14.0" mnemonicParsing="false" onAction="#onDeleteBt" text="Delete" />
-               </children>
-            </AnchorPane>
-        </items>
-      </SplitPane>
+      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" BorderPane.alignment="CENTER">
+         <children>
+            <TableView fx:id="table" layoutY="51.0" prefHeight="295.0" prefWidth="510.0">
+               <columns>
+                  <TableColumn fx:id="col_id" prefWidth="104.0" text="ID" />
+                  <TableColumn fx:id="col_name" prefWidth="163.0" text="Name" />
+                  <TableColumn fx:id="col_quantity" prefWidth="62.0" text="Quantity" />
+                  <TableColumn fx:id="col_category" prefWidth="114.0" text="Category" />
+                  <TableColumn fx:id="col_size" prefWidth="64.0" text="Size" />
+               </columns>
+            </TableView>
+            <Button fx:id="addEntryBt" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onAddEntryBt" text="Add Entry" />
+            <TextField fx:id="fieldFilter" layoutX="388.0" layoutY="14.0" prefHeight="25.0" prefWidth="106.0" promptText="Item ID / Name" />
+            <Text layoutX="344.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search:" />
+            <Button fx:id="increaseQuantityBt" layoutX="155.0" layoutY="14.0" mnemonicParsing="false" onAction="#onIncreaseQuantityBt" text="+" />
+            <Button fx:id="decreaseQuantityBt" layoutX="189.0" layoutY="14.0" mnemonicParsing="false" onAction="#onDecreaseQuantityBt" text="-" />
+            <Button fx:id="refreshBt" layoutX="279.0" layoutY="14.0" mnemonicParsing="false" onAction="#onRefreshBt" text="Refresh" />
+            <Button fx:id="deleteBt" layoutX="91.0" layoutY="14.0" mnemonicParsing="false" onAction="#onDeleteBt" text="Delete" />
+         </children>
+      </AnchorPane>
    </center>
 </BorderPane>

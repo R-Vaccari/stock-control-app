@@ -5,6 +5,7 @@ import application.database.SQL;
 import application.entities.StockItem;
 import application.entities.enums.Category;
 import application.entities.enums.Size;
+import application.exceptions.MissingSelectionException;
 import application.gui.util.Alerts;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,9 +18,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import org.h2.jdbc.JdbcSQLIntegrityConstraintViolationException;
 
 import java.io.File;
 import java.io.IOException;
@@ -63,21 +64,6 @@ public class Controller implements Initializable {
     private MenuItem aboutBt;
 
     private ObservableList<StockItem> masterData = FXCollections.observableArrayList();
-
-    @FXML
-    public void onAboutBt() {
-        AboutView aboutView = new AboutView();
-    }
-
-    @FXML
-    public void onAddEntryBt() throws IOException {
-        URL url = new File("src\\application\\gui\\EntryView.fxml").toURI().toURL();
-        Parent root = FXMLLoader.load(url);
-        Stage stage = new Stage();
-        stage.setTitle("Stock Control");
-        stage.setScene(new Scene(root));
-        stage.show();
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -135,35 +121,78 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    public void onIncreaseQuantityBt() {
-        StockItem item = table.getSelectionModel().getSelectedItem();
-        item.setQuantity(item.getQuantity() + 1);
+    public void onAboutBt() {
+        try {
+            URL url = new File("src\\application\\gui\\AboutView.fxml").toURI().toURL();
+            AnchorPane aboutPane = FXMLLoader.load(url);
 
-        SQL.updateQuantitySQL(item);
-        table.refresh();
+            mainPane.setCenter(aboutPane);
+
+            //Scene mainScene = Main.getMainScene();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void onAddEntryBt() throws IOException {
+        URL url = new File("src\\application\\gui\\EntryView.fxml").toURI().toURL();
+        Parent root = FXMLLoader.load(url);
+        Stage stage = new Stage();
+        stage.setTitle("Stock Control");
+        stage.setScene(new Scene(root));
+        stage.show();
+    }
+
+    @FXML
+    public void onIncreaseQuantityBt() {
+        try {
+            StockItem item = table.getSelectionModel().getSelectedItem();
+            if (item == null) throw new MissingSelectionException();
+
+            item.setQuantity(item.getQuantity() + 1);
+
+            SQL.updateQuantitySQL(item);
+            table.refresh();
+        } catch (MissingSelectionException e) {
+            Alerts.showAlert("Missing Selected Item", null, "One item from table must be selected.", Alert.AlertType.ERROR);
+        }
     }
 
     @FXML
     public void onDecreaseQuantityBt() {
-        StockItem item = table.getSelectionModel().getSelectedItem();
-        item.setQuantity(item.getQuantity() - 1);
+        try {
+            StockItem item = table.getSelectionModel().getSelectedItem();
+            if (item == null) throw new MissingSelectionException();
 
-        if (item.getQuantity() >= 0) SQL.updateQuantitySQL(item);
-        else {
-            Alerts.showAlert("Negative Quantity", null, "Item quantity may not be negative.",
-                    Alert.AlertType.ERROR);
-            item.setQuantity(0);
+            item.setQuantity(item.getQuantity() - 1);
+
+            if (item.getQuantity() >= 0) SQL.updateQuantitySQL(item);
+            else {
+                Alerts.showAlert("Negative Quantity", null, "Item quantity may not be negative.",
+                        Alert.AlertType.ERROR);
+                item.setQuantity(0);
+            }
+            table.refresh();
+        } catch (MissingSelectionException e) {
+            Alerts.showAlert("Missing Selected Item", null, "One item from table must be selected.", Alert.AlertType.ERROR);
         }
-        table.refresh();
     }
 
     @FXML
     public void onDeleteBt() {
-        StockItem item = table.getSelectionModel().getSelectedItem();
-        SQL.deleteSQL(item);
-        List<StockItem> items = SQL.buildListFromDB();
-        masterData.removeAll(masterData);
-        masterData.addAll(items);
+        try {
+            StockItem item = table.getSelectionModel().getSelectedItem();
+            if (item == null) throw new MissingSelectionException();
+
+            SQL.deleteSQL(item);
+            List<StockItem> items = SQL.buildListFromDB();
+
+            masterData.removeAll(masterData);
+            masterData.addAll(items);
+        } catch (MissingSelectionException e) {
+            Alerts.showAlert("Missing Selected Item", null, "One item from table must be selected.", Alert.AlertType.ERROR);
+        }
     }
 
     @FXML

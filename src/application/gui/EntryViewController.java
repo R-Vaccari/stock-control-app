@@ -1,6 +1,6 @@
 package application.gui;
 
-import application.RequiredFieldException;
+import application.exceptions.RequiredFieldException;
 import application.database.SQL;
 import application.entities.StockItem;
 import application.entities.enums.Category;

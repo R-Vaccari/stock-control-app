@@ -4,13 +4,13 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="286.0" prefWidth="379.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Text layoutX="14.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="About">
          <font>
-            <Font size="24.0" />
+            <Font name="Georgia" size="24.0" />
          </font>
       </Text>
+      <Text layoutX="14.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&#10;This application is a open-source project developed by Rodrigo Vaccari. This project is a non-profit endeavor and delivered as-is. &#10;&#10;The app and it's source code are attributed to Rodrigo Vaccari.&#10;&#10;&#10;Contact Info&#10;&#10;Email: rodrigo.v.melo@hotmail.com&#10;Github: https://github.com/R-Vaccari&#10;LinkedIn: https://www.linked.com/in/rodrigo-vaccari-3128b7167&#10;" wrappingWidth="345.125" />
    </children>
 </AnchorPane>
