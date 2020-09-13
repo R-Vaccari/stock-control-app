@@ -20,6 +20,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.File;
 import java.io.IOException;
@@ -61,6 +62,8 @@ public class Controller implements Initializable {
     private MenuItem aboutBt;
     @FXML
     private MenuItem homeBt;
+    @FXML
+    private MenuItem editBt;
 
     private ObservableList<StockItem> masterData = FXCollections.observableArrayList();
 
@@ -129,6 +132,28 @@ public class Controller implements Initializable {
         stage.setTitle("Stock Control");
         stage.setScene(new Scene(root));
         stage.show();
+    }
+
+    @FXML
+    public void onEditEntryBt() throws IOException {
+        try {
+            StockItem item = table.getSelectionModel().getSelectedItem();
+            if (item == null) throw new MissingSelectionException();
+
+            URL url = new File("src\\application\\gui\\EditView.fxml").toURI().toURL();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("EditView.fxml"));
+
+            Stage stage = new Stage();
+            stage.setTitle("Stock Control");
+            stage.setScene(new Scene(loader.load()));
+
+            EditViewController controller = loader.getController();
+            controller.updateFields(item);
+
+            stage.show();
+        } catch (MissingSelectionException e ) {
+            Alerts.showAlert("Missing Selected Item", null, "One item from table must be selected.", Alert.AlertType.ERROR);
+        }
     }
 
     @FXML

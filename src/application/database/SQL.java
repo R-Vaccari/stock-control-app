@@ -130,6 +130,34 @@ public class SQL {
         }
     }
 
+    public static void updateItemSQL(StockItem item) {
+        PreparedStatement statement = null;
+
+        try {
+            conn = DBConnector.getConnection();
+            conn.setAutoCommit(false);
+
+            statement = conn.prepareStatement("UPDATE stockitem SET id = ?, quantity = ?, category = ?, size = ? WHERE name = ?");
+            statement.setString(1, item.getId());
+            statement.setInt(2, item.getQuantity());
+            statement.setString(3, item.getCategory().toString());
+            statement.setString(4, item.getSize().toString());
+            statement.setString(5, item.getName());
+
+            statement.executeUpdate();
+            conn.commit();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            try {
+                if (statement != null) statement.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static void deleteSQL(StockItem item) {
         PreparedStatement statement = null;
 
