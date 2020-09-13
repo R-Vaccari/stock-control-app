@@ -17,7 +17,7 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
+              <MenuItem fx:id="homeBt" mnemonicParsing="false" onAction="#onHomeBt" text="Home" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
@@ -34,9 +34,9 @@
       </MenuBar>
    </top>
    <center>
-      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" BorderPane.alignment="CENTER">
+      <AnchorPane fx:id="centerPane" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" BorderPane.alignment="CENTER">
          <children>
-            <TableView fx:id="table" layoutY="51.0" prefHeight="295.0" prefWidth="510.0">
+            <TableView fx:id="table" layoutX="26.0" layoutY="51.0" prefHeight="295.0" prefWidth="510.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <columns>
                   <TableColumn fx:id="col_id" prefWidth="104.0" text="ID" />
                   <TableColumn fx:id="col_name" prefWidth="163.0" text="Name" />

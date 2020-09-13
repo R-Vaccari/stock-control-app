@@ -16,31 +16,11 @@ public class StockItem {
     public StockItem() {
     }
 
-    public StockItem(String id, String name, Integer quantity) {
-        this.id = id;
-        this.name = name;
-        this.quantity = quantity;
-    }
-
     public StockItem(String id, String name, Integer quantity, Category category, Size size) {
         this.id = id;
         this.name = name;
         this.quantity = quantity;
         this.category = category;
-        this.size = size;
-    }
-
-    public StockItem(String id, String name, Integer quantity, Category category) {
-        this.id = id;
-        this.name = name;
-        this.quantity = quantity;
-        this.category = category;
-    }
-
-    public StockItem(String id, String name, Integer quantity, Size size) {
-        this.id = id;
-        this.name = name;
-        this.quantity = quantity;
         this.size = size;
     }
 
@@ -50,9 +30,7 @@ public class StockItem {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
+    public String getName() { return name; }
 
     public void setName(String name) {
         this.name = name;

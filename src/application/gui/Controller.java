@@ -1,6 +1,5 @@
 package application.gui;
 
-import application.database.DBConnector;
 import application.database.SQL;
 import application.entities.StockItem;
 import application.entities.enums.Category;
@@ -25,10 +24,6 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -36,6 +31,8 @@ public class Controller implements Initializable {
 
     @FXML
     private BorderPane mainPane;
+    @FXML
+    private AnchorPane centerPane;
     @FXML
     private Button addEntryBt;
     @FXML
@@ -62,29 +59,15 @@ public class Controller implements Initializable {
     private TableColumn<StockItem, Size> col_size;
     @FXML
     private MenuItem aboutBt;
+    @FXML
+    private MenuItem homeBt;
 
     private ObservableList<StockItem> masterData = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Connection conn = null;
 
-        try {
-            conn = DBConnector.getConnection();
-            DatabaseMetaData dbm = conn.getMetaData();
-
-            ResultSet tables = dbm.getTables(null, null, "STOCKITEM", null);
-            if (!tables.next()) SQL.createItemTable();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        } finally {
-            try {
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
+        SQL.checkForTable();
         List<StockItem> items = SQL.buildListFromDB();
 
         col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -127,17 +110,21 @@ public class Controller implements Initializable {
             AnchorPane aboutPane = FXMLLoader.load(url);
 
             mainPane.setCenter(aboutPane);
-
-            //Scene mainScene = Main.getMainScene();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     @FXML
+    public void onHomeBt() {
+        mainPane.setCenter(centerPane);
+    }
+
+    @FXML
     public void onAddEntryBt() throws IOException {
         URL url = new File("src\\application\\gui\\EntryView.fxml").toURI().toURL();
         Parent root = FXMLLoader.load(url);
+
         Stage stage = new Stage();
         stage.setTitle("Stock Control");
         stage.setScene(new Scene(root));
