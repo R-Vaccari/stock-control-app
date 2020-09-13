@@ -30,7 +30,7 @@ public class EditViewController implements Initializable {
     @FXML
     private TextField txt04;
     @FXML
-    private Text nameField;
+    private Text idField;
 
     @FXML
     public void onUpdateBt() {
@@ -38,7 +38,7 @@ public class EditViewController implements Initializable {
         try {
             if (txt01.getText().equals("") || txt02.getText().equals("")) throw new RequiredFieldException();
             else {
-                StockItem item = new StockItem(txt01.getText(), nameField.getText(), Integer.parseInt(txt02.getText()),
+                StockItem item = new StockItem(idField.getText(), txt01.getText(), Integer.parseInt(txt02.getText()),
                         Category.valueOf(txt03.getText().toUpperCase()), Size.valueOf(txt04.getText().toUpperCase()));
 
                 SQL.updateItemSQL(item);
@@ -53,11 +53,11 @@ public class EditViewController implements Initializable {
     }
 
     public void updateFields(StockItem item) {
-        txt01.setText(item.getId());
+        txt01.setText(item.getName());
         txt02.setText(item.getQuantity().toString());
         txt03.setText(item.getCategory().toString());
         txt04.setText(item.getSize().toString());
-        nameField.setText(item.getName());
+        idField.setText(item.getId());
     }
 
     public void closeStage() {

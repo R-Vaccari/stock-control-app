@@ -39,8 +39,8 @@ public class SQL {
             conn = DBConnector.getConnection();
             conn.setAutoCommit(false);
 
-            statement = conn.prepareStatement("CREATE TABLE stockitem (id varchar(10), name varchar(20) PRIMARY KEY, quantity int CHECK (quantity >= 0), " +
-                    "category varchar(10), size varchar(10))");
+            statement = conn.prepareStatement("CREATE TABLE stockitem (id varchar(15) PRIMARY KEY, name varchar(30), quantity int CHECK (quantity >= 0), " +
+                    "category varchar(15), size varchar(15))");
 
             statement.executeUpdate();
             conn.commit();
@@ -137,12 +137,12 @@ public class SQL {
             conn = DBConnector.getConnection();
             conn.setAutoCommit(false);
 
-            statement = conn.prepareStatement("UPDATE stockitem SET id = ?, quantity = ?, category = ?, size = ? WHERE name = ?");
-            statement.setString(1, item.getId());
+            statement = conn.prepareStatement("UPDATE stockitem SET name = ?, quantity = ?, category = ?, size = ? WHERE id = ?");
+            statement.setString(1, item.getName());
             statement.setInt(2, item.getQuantity());
             statement.setString(3, item.getCategory().toString());
             statement.setString(4, item.getSize().toString());
-            statement.setString(5, item.getName());
+            statement.setString(5, item.getId());
 
             statement.executeUpdate();
             conn.commit();
