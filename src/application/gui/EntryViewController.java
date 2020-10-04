@@ -30,16 +30,6 @@ public class EntryViewController implements Initializable {
     private TextField txt04;
     @FXML
     private TextField txt05;
-    /*
-    @FXML
-    private MenuItem menuItem1 = new MenuItem("Lugagge");
-    @FXML
-    private MenuItem menuItem2 = new MenuItem("Backpack");
-    @FXML
-    private MenuItem menuItem3 = new MenuItem("Wallet");
-    @FXML
-    private MenuButton menuButton01 = new MenuButton("Category", null, menuItem1, menuItem2, menuItem3);
-     */
 
     @FXML
     public void onRegisterBt() {
