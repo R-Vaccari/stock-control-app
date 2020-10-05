@@ -1,5 +1,6 @@
 package application.gui;
 
+import application.exceptions.UnrecognizedUserException;
 import application.gui.util.Alerts;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,12 +26,15 @@ public class LogInController implements Initializable {
     @FXML private TextField txtPass;
 
     public void onLogInButton() {
-        if (txtUsername.getText().equals("admin") && txtPass.getText().equals("123456")) {
-            loadMain();
-            closeStage();
-        } else {
-            Alerts.showAlert("Sign In Error", null, "Wrong username or password.",
-                    Alert.AlertType.ERROR);
+        try {
+            if (txtUsername.getText().equals("admin") && txtPass.getText().equals("123456")) {
+                loadMain();
+                closeStage();
+            } else {
+                throw new UnrecognizedUserException("Wrong username or password.");
+            }
+        } catch (UnrecognizedUserException e) {
+
         }
     }
 
@@ -56,7 +60,7 @@ public class LogInController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        pane.setStyle("-fx-background-color: darkgreen;");
+        pane.setStyle("-fx-background-color: linear-gradient(to bottom right, #2f4f4f, #006400);");
 
     }
 }

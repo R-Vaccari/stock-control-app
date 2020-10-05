@@ -2,7 +2,7 @@ package application.exceptions;
 
 public class MissingSelectionException extends RuntimeException {
 
-    public MissingSelectionException(){
-        super();
+    public MissingSelectionException(String msg){
+        super(msg);
     }
 }

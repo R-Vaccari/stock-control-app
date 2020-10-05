@@ -2,7 +2,7 @@ package application.exceptions;
 
 public class RequiredFieldException extends RuntimeException {
 
-    public RequiredFieldException(){
-        super();
+    public RequiredFieldException(String msg){
+        super(msg);
     }
 }

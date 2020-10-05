@@ -40,7 +40,7 @@ public class EditViewController implements Initializable {
     @FXML
     public void onUpdateBt() {
         try {
-            if (txt01.getText().equals("") || txt02.getText().equals("")) throw new RequiredFieldException();
+            if (txt01.getText().equals("") || txt02.getText().equals("")) throw new RequiredFieldException("Id, Name and Quantity fields must be filled.");
             else {
                 StockItem item = new StockItem(idField.getText(), txt01.getText(), Integer.parseInt(txt02.getText()),
                         Category.valueOf(txt03.getText().toUpperCase()), Size.valueOf(txt04.getText().toUpperCase()));
@@ -51,7 +51,7 @@ public class EditViewController implements Initializable {
                 closeStage();
             }
         } catch (RequiredFieldException e) {
-            Alerts.showAlert("Fields Missing", null, "Id, Name and Quantity fields must be filled.",
+            Alerts.showAlert("Fields Missing", null, e.getMessage(),
                     Alert.AlertType.ERROR);
         }
     }

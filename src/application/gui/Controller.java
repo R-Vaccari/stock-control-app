@@ -137,7 +137,7 @@ public class Controller implements Initializable {
     public void onEditEntryBt() throws IOException {
         try {
             StockItem item = table.getSelectionModel().getSelectedItem();
-            if (item == null) throw new MissingSelectionException();
+            if (item == null) throw new MissingSelectionException("One item from table must be selected.");
 
             URL url = new File("src\\application\\gui\\EditView.fxml").toURI().toURL();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("EditView.fxml"));
@@ -151,7 +151,7 @@ public class Controller implements Initializable {
 
             stage.show();
         } catch (MissingSelectionException e ) {
-            Alerts.showAlert("Missing Selected Item", null, "One item from table must be selected.", Alert.AlertType.ERROR);
+            Alerts.showAlert("Missing Selected Item", null, e.getMessage() , Alert.AlertType.ERROR);
         }
     }
 
@@ -159,14 +159,14 @@ public class Controller implements Initializable {
     public void onIncreaseQuantityBt() {
         try {
             StockItem item = table.getSelectionModel().getSelectedItem();
-            if (item == null) throw new MissingSelectionException();
+            if (item == null) throw new MissingSelectionException("One item from table must be selected.");
 
             item.setQuantity(item.getQuantity() + 1);
 
             SQL.updateQuantitySQL(item);
             table.refresh();
         } catch (MissingSelectionException e) {
-            Alerts.showAlert("Missing Selected Item", null, "One item from table must be selected.", Alert.AlertType.ERROR);
+            Alerts.showAlert("Missing Selected Item", null, e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
@@ -174,7 +174,7 @@ public class Controller implements Initializable {
     public void onDecreaseQuantityBt() {
         try {
             StockItem item = table.getSelectionModel().getSelectedItem();
-            if (item == null) throw new MissingSelectionException();
+            if (item == null) throw new MissingSelectionException("One item from table must be selected.");
 
             item.setQuantity(item.getQuantity() - 1);
 
@@ -186,7 +186,7 @@ public class Controller implements Initializable {
             }
             table.refresh();
         } catch (MissingSelectionException e) {
-            Alerts.showAlert("Missing Selected Item", null, "One item from table must be selected.", Alert.AlertType.ERROR);
+            Alerts.showAlert("Missing Selected Item", null, e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
@@ -194,7 +194,7 @@ public class Controller implements Initializable {
     public void onDeleteBt() {
         try {
             StockItem item = table.getSelectionModel().getSelectedItem();
-            if (item == null) throw new MissingSelectionException();
+            if (item == null) throw new MissingSelectionException("One item from table must be selected.");
 
             SQL.deleteSQL(item);
             List<StockItem> items = SQL.buildListFromDB();
@@ -202,7 +202,7 @@ public class Controller implements Initializable {
             masterData.removeAll(masterData);
             masterData.addAll(items);
         } catch (MissingSelectionException e) {
-            Alerts.showAlert("Missing Selected Item", null, "One item from table must be selected.", Alert.AlertType.ERROR);
+            Alerts.showAlert("Missing Selected Item", null, e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 

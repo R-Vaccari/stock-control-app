@@ -34,7 +34,7 @@ public class EntryViewController implements Initializable {
     @FXML
     public void onRegisterBt() {
         try {
-            if (txt01.getText().equals("") || txt02.getText().equals("") || txt03.getText().equals("")) throw new RequiredFieldException();
+            if (txt01.getText().equals("") || txt02.getText().equals("") || txt03.getText().equals("")) throw new RequiredFieldException("Id, Name and Quantity fields must be filled.");
             else {
                 StockItem item = new StockItem(txt01.getText(), txt02.getText(), Integer.parseInt(txt03.getText()),
                         Category.valueOf(txt04.getText().toUpperCase()), Size.valueOf(txt05.getText().toUpperCase()));
@@ -45,7 +45,7 @@ public class EntryViewController implements Initializable {
                 closeStage();
             }
         } catch (RequiredFieldException e) {
-            Alerts.showAlert("Fields Missing", null, "Id, Name and Quantity fields must be filled.",
+            Alerts.showAlert("Fields Missing", null, e.getMessage(),
                     Alert.AlertType.ERROR);
         }
     }
