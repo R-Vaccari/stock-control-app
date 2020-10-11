@@ -8,7 +8,6 @@ import application.entities.enums.Category;
 import application.entities.enums.Size;
 import application.exceptions.MissingSelectionException;
 import application.gui.util.Alerts;
-import application.gui.util.SceneAdmin;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -26,6 +25,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -51,8 +51,6 @@ public class Controller implements Initializable {
     @FXML private MenuItem editBt;
 
     private ObservableList<StockItem> masterData = FXCollections.observableArrayList();
-
-    private SceneAdmin sceneAdmin = new SceneAdmin();
 
     StockItemRepository stockItemRepository = RepositoryAdmin.getStockItemRepository();
 
@@ -114,12 +112,19 @@ public class Controller implements Initializable {
 
     @FXML
     public void onAddEntryBt() {
-        Parent root = sceneAdmin.loadSceneByURL("src\\application\\gui\\EntryView.fxml");
+        try {
+            URL url = new File("src\\application\\gui\\EntryView.fxml").toURI().toURL();
+            Parent root = FXMLLoader.load(url);
 
-        Stage stage = new Stage();
-        stage.setTitle("Stock Control");
-        stage.setScene(new Scene(root));
-        stage.show();
+            Stage stage = new Stage();
+            stage.setTitle("Stock Control");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (MalformedURLException throwables) { Alerts.showAlert("URL Error", null,
+                "An exception occurred forming the URL.", Alert.AlertType.ERROR);
+        } catch (IOException e) { Alerts.showAlert("I/O Error", null,
+                "A I/O exception occurred while loading the URL.", Alert.AlertType.ERROR);
+        }
     }
 
     @FXML
