@@ -1,11 +1,14 @@
 package application.gui;
 
-import application.database.SQL;
+import application.repositories.RepositoryAdmin;
+import application.database.DBAdmin;
+import application.repositories.StockItemRepository;
 import application.entities.StockItem;
 import application.entities.enums.Category;
 import application.entities.enums.Size;
 import application.exceptions.MissingSelectionException;
 import application.gui.util.Alerts;
+import application.gui.util.SceneAdmin;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -29,48 +32,35 @@ import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
 
-    @FXML
-    private BorderPane mainPane;
-    @FXML
-    private AnchorPane centerPane;
-    @FXML
-    private Button addEntryBt;
-    @FXML
-    private Button increaseQuantityBt;
-    @FXML
-    private Button decreaseQuantityBt;
-    @FXML
-    private Button refreshBt;
-    @FXML
-    private Button deleteBt;
-    @FXML
-    private TextField fieldFilter;
-    @FXML
-    private TableView<StockItem> table = new TableView<>();
-    @FXML
-    private TableColumn<StockItem, String> col_id;
-    @FXML
-    private TableColumn<StockItem, String> col_name;
-    @FXML
-    private TableColumn<StockItem, Integer> col_quantity;
-    @FXML
-    private TableColumn<StockItem, Category> col_category;
-    @FXML
-    private TableColumn<StockItem, Size> col_size;
-    @FXML
-    private MenuItem aboutBt;
-    @FXML
-    private MenuItem homeBt;
-    @FXML
-    private MenuItem editBt;
+    @FXML private BorderPane mainPane;
+    @FXML private AnchorPane centerPane;
+    @FXML private Button addEntryBt;
+    @FXML private Button increaseQuantityBt;
+    @FXML private Button decreaseQuantityBt;
+    @FXML private Button refreshBt;
+    @FXML private Button deleteBt;
+    @FXML private TextField fieldFilter;
+    @FXML private TableView<StockItem> table = new TableView<>();
+    @FXML private TableColumn<StockItem, String> col_id;
+    @FXML private TableColumn<StockItem, String> col_name;
+    @FXML private TableColumn<StockItem, Integer> col_quantity;
+    @FXML private TableColumn<StockItem, Category> col_category;
+    @FXML private TableColumn<StockItem, Size> col_size;
+    @FXML private MenuItem aboutBt;
+    @FXML private MenuItem homeBt;
+    @FXML private MenuItem editBt;
 
     private ObservableList<StockItem> masterData = FXCollections.observableArrayList();
+
+    private SceneAdmin sceneAdmin = new SceneAdmin();
+
+    StockItemRepository stockItemRepository = RepositoryAdmin.getStockItemRepository();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        SQL.checkForTable();
-        List<StockItem> items = SQL.buildListFromDB();
+        DBAdmin.checkForTable();
+        List<StockItem> items = DBAdmin.buildListFromDB();
 
         col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
         col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -123,9 +113,8 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    public void onAddEntryBt() throws IOException {
-        URL url = new File("src\\application\\gui\\EntryView.fxml").toURI().toURL();
-        Parent root = FXMLLoader.load(url);
+    public void onAddEntryBt() {
+        Parent root = sceneAdmin.loadSceneByURL("src\\application\\gui\\EntryView.fxml");
 
         Stage stage = new Stage();
         stage.setTitle("Stock Control");
@@ -134,24 +123,24 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    public void onEditEntryBt() throws IOException {
+    public void onEditEntryBt() {
         try {
             StockItem item = table.getSelectionModel().getSelectedItem();
             if (item == null) throw new MissingSelectionException("One item from table must be selected.");
 
-            URL url = new File("src\\application\\gui\\EditView.fxml").toURI().toURL();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("EditView.fxml"));
 
             Stage stage = new Stage();
             stage.setTitle("Stock Control");
             stage.setScene(new Scene(loader.load()));
+            stage.show();
 
             EditViewController controller = loader.getController();
             controller.updateFields(item);
-
-            stage.show();
-        } catch (MissingSelectionException e ) {
-            Alerts.showAlert("Missing Selected Item", null, e.getMessage() , Alert.AlertType.ERROR);
+        } catch (MissingSelectionException throwables) {
+            Alerts.showAlert("Missing Selected Item", null, throwables.getMessage() , Alert.AlertType.ERROR);
+        } catch(IOException throwables) { Alerts.showAlert("I/O Error", null,
+                "A I/O exception occurred while loading the URL.", Alert.AlertType.ERROR);
         }
     }
 
@@ -163,7 +152,7 @@ public class Controller implements Initializable {
 
             item.setQuantity(item.getQuantity() + 1);
 
-            SQL.updateQuantitySQL(item);
+            stockItemRepository.updateQuantity(item);
             table.refresh();
         } catch (MissingSelectionException e) {
             Alerts.showAlert("Missing Selected Item", null, e.getMessage(), Alert.AlertType.ERROR);
@@ -178,7 +167,7 @@ public class Controller implements Initializable {
 
             item.setQuantity(item.getQuantity() - 1);
 
-            if (item.getQuantity() >= 0) SQL.updateQuantitySQL(item);
+            if (item.getQuantity() >= 0) stockItemRepository.updateQuantity(item);
             else {
                 Alerts.showAlert("Negative Quantity", null, "Item quantity may not be negative.",
                         Alert.AlertType.ERROR);
@@ -196,8 +185,8 @@ public class Controller implements Initializable {
             StockItem item = table.getSelectionModel().getSelectedItem();
             if (item == null) throw new MissingSelectionException("One item from table must be selected.");
 
-            SQL.deleteSQL(item);
-            List<StockItem> items = SQL.buildListFromDB();
+            stockItemRepository.delete(item);
+            List<StockItem> items = DBAdmin.buildListFromDB();
 
             masterData.removeAll(masterData);
             masterData.addAll(items);
@@ -208,7 +197,7 @@ public class Controller implements Initializable {
 
     @FXML
     public void onRefreshBt() {
-        List<StockItem> items = SQL.buildListFromDB();
+        List<StockItem> items = DBAdmin.buildListFromDB();
         masterData.removeAll(masterData);
         masterData.addAll(items);
     }

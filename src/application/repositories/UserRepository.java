@@ -1,5 +1,6 @@
-package application.database;
+package application.repositories;
 
+import application.database.DBConnector;
 import application.entities.User;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;

@@ -1,10 +1,11 @@
 package application.gui;
 
-import application.exceptions.RequiredFieldException;
-import application.database.SQL;
+import application.repositories.RepositoryAdmin;
+import application.repositories.StockItemRepository;
 import application.entities.StockItem;
 import application.entities.enums.Category;
 import application.entities.enums.Size;
+import application.exceptions.RequiredFieldException;
 import application.gui.util.Alerts;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -18,18 +19,14 @@ import java.util.ResourceBundle;
 
 public class EntryViewController implements Initializable {
 
-    @FXML
-    private Button registerBt;
-    @FXML
-    private TextField txt01;
-    @FXML
-    private TextField txt02;
-    @FXML
-    private TextField txt03;
-    @FXML
-    private TextField txt04;
-    @FXML
-    private TextField txt05;
+    @FXML private Button registerBt;
+    @FXML private TextField txt01;
+    @FXML private TextField txt02;
+    @FXML private TextField txt03;
+    @FXML private TextField txt04;
+    @FXML private TextField txt05;
+
+    StockItemRepository stockItemRepository = RepositoryAdmin.getStockItemRepository();
 
     @FXML
     public void onRegisterBt() {
@@ -39,7 +36,7 @@ public class EntryViewController implements Initializable {
                 StockItem item = new StockItem(txt01.getText(), txt02.getText(), Integer.parseInt(txt03.getText()),
                         Category.valueOf(txt04.getText().toUpperCase()), Size.valueOf(txt05.getText().toUpperCase()));
 
-                SQL.executeSQL(item);
+                stockItemRepository.insert(item);
                 Alerts.showAlert("Entry Registration", null, "Entry registered successfully. Use 'Refresh' to see changes.",
                         Alert.AlertType.INFORMATION);
                 closeStage();
