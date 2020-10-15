@@ -37,14 +37,13 @@ public class LogInController implements Initializable {
     public void onLogInButton() {
         try {
             User user = UserRepository.findByUsername(txtUsername.getText());
-            if (user != null) {
+            if (user != null && user.getPassword().equals(txtPass.getText())) {
                 loadMain();
                 closeStage();
             } else { throw new UnrecognizedUserException("Wrong username or password."); }
         } catch (UnrecognizedUserException e) {
             e.printStackTrace();
         }
-
     }
 
     public void closeStage() {
