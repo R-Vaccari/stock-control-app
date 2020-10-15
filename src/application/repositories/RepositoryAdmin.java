@@ -6,6 +6,5 @@ public class RepositoryAdmin {
     static final UserRepository userRepository = new UserRepository();
 
     public static StockItemRepository getStockItemRepository() { return stockItemRepository; }
-
     public static UserRepository getUserRepository() { return userRepository; }
 }

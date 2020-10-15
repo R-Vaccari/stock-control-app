@@ -51,8 +51,7 @@ public class Controller implements Initializable {
     @FXML private MenuItem editBt;
 
     private ObservableList<StockItem> masterData = FXCollections.observableArrayList();
-
-    StockItemRepository stockItemRepository = RepositoryAdmin.getStockItemRepository();
+    private StockItemRepository stockItemRepository = RepositoryAdmin.getStockItemRepository();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

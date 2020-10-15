@@ -1,7 +1,10 @@
 package application.gui;
 
+import application.entities.User;
 import application.exceptions.UnrecognizedUserException;
 import application.gui.util.Alerts;
+import application.repositories.RepositoryAdmin;
+import application.repositories.UserRepository;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -20,6 +23,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class LogInController implements Initializable {
@@ -32,15 +36,15 @@ public class LogInController implements Initializable {
 
     public void onLogInButton() {
         try {
-            if (txtUsername.getText().equals("admin") && txtPass.getText().equals("123456")) {
+            User user = UserRepository.findByUsername(txtUsername.getText());
+            if (user != null) {
                 loadMain();
                 closeStage();
-            } else {
-                throw new UnrecognizedUserException("Wrong username or password.");
-            }
+            } else { throw new UnrecognizedUserException("Wrong username or password."); }
         } catch (UnrecognizedUserException e) {
-
+            e.printStackTrace();
         }
+
     }
 
     public void closeStage() {
