@@ -119,7 +119,7 @@ public class StockItemRepository implements GenericRepository<StockItem> {
         return null;
     }
 
-    public static void updateQuantity(StockItem item) {
+    public void updateQuantity(StockItem item) {
         PreparedStatement statement = null;
 
         try {

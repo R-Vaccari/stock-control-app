@@ -14,6 +14,9 @@ public class StockItem implements Serializable {
     private Category category;
     private Size size;
 
+    public StockItem() {
+    }
+
     public StockItem(String id, String name, Integer quantity, Category category, Size size) {
         this.id = id;
         this.name = name;

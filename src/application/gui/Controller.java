@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
@@ -154,10 +155,12 @@ public class Controller implements Initializable {
             StockItem item = table.getSelectionModel().getSelectedItem();
             if (item == null) throw new MissingSelectionException("One item from table must be selected.");
 
-            item.setQuantity(item.getQuantity() + 1);
-
-            stockItemRepository.updateQuantity(item);
-            table.refresh();
+            Optional<ButtonType> result = Alerts.showConfirmation(null, "Are you sure?");
+            if (result.get() == ButtonType.OK) {
+                item.setQuantity(item.getQuantity() + 1);
+                stockItemRepository.updateQuantity(item);
+                table.refresh();
+            }
         } catch (MissingSelectionException e) {
             Alerts.showAlert("Missing Selected Item", null, e.getMessage(), Alert.AlertType.ERROR);
         }
@@ -169,13 +172,16 @@ public class Controller implements Initializable {
             StockItem item = table.getSelectionModel().getSelectedItem();
             if (item == null) throw new MissingSelectionException("One item from table must be selected.");
 
-            item.setQuantity(item.getQuantity() - 1);
+            Optional<ButtonType> result = Alerts.showConfirmation(null, "Are you sure?");
+            if (result.get() == ButtonType.OK) {
+                item.setQuantity(item.getQuantity() - 1);
 
-            if (item.getQuantity() >= 0) stockItemRepository.updateQuantity(item);
-            else {
-                Alerts.showAlert("Negative Quantity", null, "Item quantity may not be negative.",
-                        Alert.AlertType.ERROR);
-                item.setQuantity(0);
+                if (item.getQuantity() > 0) stockItemRepository.updateQuantity(item);
+                else {
+                    Alerts.showAlert("Negative Quantity", null, "Item quantity may not be negative.",
+                            Alert.AlertType.ERROR);
+                    item.setQuantity(0);
+                }
             }
             table.refresh();
         } catch (MissingSelectionException e) {
@@ -188,12 +194,11 @@ public class Controller implements Initializable {
         try {
             StockItem item = table.getSelectionModel().getSelectedItem();
             if (item == null) throw new MissingSelectionException("One item from table must be selected.");
-
-            stockItemRepository.delete(item);
-            List<StockItem> items = StockItemRepository.buildListFromDB();
-
-            masterData.removeAll(masterData);
-            masterData.addAll(items);
+            Optional<ButtonType> result = Alerts.showConfirmation(null, "Are you sure?");
+            if (result.get() == ButtonType.OK) {
+                stockItemRepository.delete(item);
+                table.refresh();
+            }
         } catch (MissingSelectionException e) {
             Alerts.showAlert("Missing Selected Item", null, e.getMessage(), Alert.AlertType.ERROR);
         }
@@ -201,8 +206,6 @@ public class Controller implements Initializable {
 
     @FXML
     public void onRefreshBt() {
-        List<StockItem> items = StockItemRepository.buildListFromDB();
-        masterData.removeAll(masterData);
-        masterData.addAll(items);
+        table.refresh();
     }
 }

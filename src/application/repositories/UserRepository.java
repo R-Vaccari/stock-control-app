@@ -121,7 +121,7 @@ public class UserRepository implements GenericRepository<User> {
 
     public static User findByUsername(String username) {
         QueryRunner qr = new QueryRunner();
-        ResultSetHandler<User> handler = new BeanHandler<User>(User.class);
+        ResultSetHandler<User> handler = new BeanHandler<>(User.class);
 
         try {
             conn = DBConnector.getConnection();
@@ -133,7 +133,7 @@ public class UserRepository implements GenericRepository<User> {
             return user;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-        }finally {
+        } finally {
             try {
                 if (conn != null) conn.close();
             } catch (SQLException e) {
@@ -142,6 +142,4 @@ public class UserRepository implements GenericRepository<User> {
         }
         return null;
     }
-
-
 }
