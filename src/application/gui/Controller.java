@@ -1,7 +1,6 @@
 package application.gui;
 
 import application.repositories.RepositoryAdmin;
-import application.database.DBAdmin;
 import application.repositories.StockItemRepository;
 import application.entities.StockItem;
 import application.entities.enums.Category;
@@ -58,7 +57,6 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        DBAdmin.checkForTable();
         List<StockItem> items = StockItemRepository.buildListFromDB();
 
         col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
