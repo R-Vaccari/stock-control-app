@@ -2,14 +2,39 @@ package application.repositories;
 
 import application.database.DBConnector;
 import application.entities.StockItem;
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.ResultSetHandler;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
 public class StockItemRepository implements GenericRepository<StockItem> {
 
     static Connection conn = null;
+
+    public static List<StockItem> buildListFromDB() {
+        QueryRunner qr = new QueryRunner();
+        ResultSetHandler<List<StockItem>> handler = new BeanListHandler<StockItem>(StockItem.class);
+
+        try {
+            conn = DBConnector.getConnection();
+            List<StockItem> items = qr.query(conn, "SELECT * FROM stockitem", handler);
+
+            return items;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            try {
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
 
     @Override
     public void insert(StockItem item) {
@@ -65,6 +90,7 @@ public class StockItemRepository implements GenericRepository<StockItem> {
         }
     }
 
+    @Override
     public void update(StockItem item) {
         PreparedStatement statement = null;
 
@@ -93,6 +119,7 @@ public class StockItemRepository implements GenericRepository<StockItem> {
         }
     }
 
+    @Override
     public void delete(StockItem item) {
         PreparedStatement statement = null;
 

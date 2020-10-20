@@ -3,18 +3,16 @@ package application.entities;
 import application.entities.enums.Category;
 import application.entities.enums.Size;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class StockItem {
+public class StockItem implements Serializable {
 
     private String id;
     private String name;
     private int quantity;
     private Category category;
     private Size size;
-
-    public StockItem() {
-    }
 
     public StockItem(String id, String name, Integer quantity, Category category, Size size) {
         this.id = id;

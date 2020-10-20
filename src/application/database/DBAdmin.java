@@ -56,26 +56,7 @@ public class DBAdmin {
         }
     }
 
-    public static List<StockItem> buildListFromDB() {
-        QueryRunner qr = new QueryRunner();
-        ResultSetHandler<List<StockItem>> handler = new BeanListHandler<StockItem>(StockItem.class);
 
-        try {
-            conn = DBConnector.getConnection();
-            List<StockItem> items = qr.query(conn, "SELECT * FROM stockitem", handler);
-
-            return items;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        } finally {
-            try {
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
 
 
 }

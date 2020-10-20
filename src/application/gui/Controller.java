@@ -21,6 +21,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -49,6 +50,7 @@ public class Controller implements Initializable {
     @FXML private MenuItem aboutBt;
     @FXML private MenuItem homeBt;
     @FXML private MenuItem editBt;
+    @FXML private Text currentLogged;
 
     private ObservableList<StockItem> masterData = FXCollections.observableArrayList();
     private StockItemRepository stockItemRepository = RepositoryAdmin.getStockItemRepository();
@@ -57,7 +59,7 @@ public class Controller implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         DBAdmin.checkForTable();
-        List<StockItem> items = DBAdmin.buildListFromDB();
+        List<StockItem> items = StockItemRepository.buildListFromDB();
 
         col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
         col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -190,7 +192,7 @@ public class Controller implements Initializable {
             if (item == null) throw new MissingSelectionException("One item from table must be selected.");
 
             stockItemRepository.delete(item);
-            List<StockItem> items = DBAdmin.buildListFromDB();
+            List<StockItem> items = StockItemRepository.buildListFromDB();
 
             masterData.removeAll(masterData);
             masterData.addAll(items);
@@ -201,7 +203,7 @@ public class Controller implements Initializable {
 
     @FXML
     public void onRefreshBt() {
-        List<StockItem> items = DBAdmin.buildListFromDB();
+        List<StockItem> items = StockItemRepository.buildListFromDB();
         masterData.removeAll(masterData);
         masterData.addAll(items);
     }

@@ -3,15 +3,15 @@ package application.entities;
 
 import application.entities.enums.Role;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
 
     private String username;
     private String password;
     private String firstName;
     private String lastName;
     private Role role;
-
-    public User() { }
 
     public User(String username, String password, String firstName, String lastName, Role role) {
         this.username = username;

@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -11,7 +12,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="372.0" prefWidth="510.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.gui.Controller">
+<BorderPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="490.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.gui.Controller">
    <top>
       <MenuBar prefHeight="25.0" prefWidth="599.0" BorderPane.alignment="CENTER">
         <menus>
@@ -36,23 +37,35 @@
    <center>
       <AnchorPane fx:id="centerPane" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" BorderPane.alignment="CENTER">
          <children>
-            <TableView fx:id="table" layoutX="26.0" layoutY="51.0" prefHeight="295.0" prefWidth="510.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <TableView fx:id="table" layoutX="26.0" layoutY="51.0" prefHeight="408.0" prefWidth="490.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <columns>
-                  <TableColumn fx:id="col_id" prefWidth="104.0" text="ID" />
-                  <TableColumn fx:id="col_name" prefWidth="163.0" text="Name" />
-                  <TableColumn fx:id="col_quantity" prefWidth="62.0" text="Quantity" />
-                  <TableColumn fx:id="col_category" prefWidth="114.0" text="Category" />
-                  <TableColumn fx:id="col_size" prefWidth="64.0" text="Size" />
+                  <TableColumn fx:id="col_id" prefWidth="89.0" text="ID" />
+                  <TableColumn fx:id="col_name" prefWidth="152.0" text="Name" />
+                  <TableColumn fx:id="col_quantity" prefWidth="88.0" text="Quantity" />
+                  <TableColumn fx:id="col_category" prefWidth="97.0" text="Category" />
+                  <TableColumn fx:id="col_size" prefWidth="63.0" text="Size" />
                </columns>
             </TableView>
-            <Button fx:id="addEntryBt" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onAddEntryBt" text="Add Entry" />
-            <TextField fx:id="fieldFilter" layoutX="388.0" layoutY="14.0" prefHeight="25.0" prefWidth="106.0" promptText="Item ID / Name" />
-            <Text layoutX="344.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search:" />
-            <Button fx:id="increaseQuantityBt" layoutX="155.0" layoutY="14.0" mnemonicParsing="false" onAction="#onIncreaseQuantityBt" text="+" />
-            <Button fx:id="decreaseQuantityBt" layoutX="189.0" layoutY="14.0" mnemonicParsing="false" onAction="#onDecreaseQuantityBt" text="-" />
-            <Button fx:id="refreshBt" layoutX="279.0" layoutY="14.0" mnemonicParsing="false" onAction="#onRefreshBt" text="Refresh" />
-            <Button fx:id="deleteBt" layoutX="91.0" layoutY="14.0" mnemonicParsing="false" onAction="#onDeleteBt" text="Delete" />
+            <TextField fx:id="fieldFilter" layoutX="370.0" layoutY="17.0" prefHeight="25.0" prefWidth="106.0" promptText="Item ID / Name" />
+            <Text layoutX="326.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search:" />
+            <Button fx:id="increaseQuantityBt" layoutX="190.0" layoutY="17.0" maxWidth="25.0" minWidth="25.0" mnemonicParsing="false" onAction="#onIncreaseQuantityBt" prefWidth="25.0" text="+" />
+            <Button fx:id="decreaseQuantityBt" layoutX="224.0" layoutY="17.0" mnemonicParsing="false" onAction="#onDecreaseQuantityBt" prefHeight="25.0" prefWidth="25.0" text="-" />
+            <Button fx:id="refreshBt" layoutX="261.0" layoutY="17.0" mnemonicParsing="false" onAction="#onRefreshBt" text="Refresh" />
+            <Button fx:id="addEntryBt" layoutX="19.0" layoutY="17.0" mnemonicParsing="false" onAction="#onAddEntryBt" text="Add Entry" />
+            <Button fx:id="deleteBt" layoutX="98.0" layoutY="17.0" mnemonicParsing="false" onAction="#onDeleteBt" prefHeight="25.0" prefWidth="70.0" text="Delete" />
          </children>
       </AnchorPane>
    </center>
+   <left>
+      <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" BorderPane.alignment="CENTER">
+        <items>
+          <AnchorPane maxHeight="150.0" maxWidth="200.0" minHeight="0.0" minWidth="0.0" prefHeight="157.0" prefWidth="158.0" />
+          <AnchorPane maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="256.0" prefWidth="158.0">
+               <children>
+                  <Text layoutX="78.0" layoutY="289.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="1.0" />
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </left>
 </BorderPane>
